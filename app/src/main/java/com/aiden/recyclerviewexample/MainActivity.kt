@@ -7,7 +7,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aiden.recyclerviewexample.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(),ExampleAdapter.OnItemClickListener{
+class MainActivity : AppCompatActivity() {
 
 
     private val binding: ActivityMainBinding by lazy {
@@ -28,7 +28,9 @@ class MainActivity : AppCompatActivity(),ExampleAdapter.OnItemClickListener{
     }
 
     private val adapter by lazy {
-        ExampleAdapter(exampleList,this)
+        ExampleAdapter(exampleList) {
+            onItemClick(it)
+        }
     }
 
 
@@ -38,7 +40,6 @@ class MainActivity : AppCompatActivity(),ExampleAdapter.OnItemClickListener{
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-
 
         binding.fabAdd.setOnClickListener {
             insertIem()
@@ -51,9 +52,9 @@ class MainActivity : AppCompatActivity(),ExampleAdapter.OnItemClickListener{
     }
 
 
-    override fun onItemClick(position: Int) {
+   private fun onItemClick(position: Int) {
         Toast.makeText(this, "Item $position clicked", Toast.LENGTH_SHORT).show()
-        val clickedItem:ExampleItem = exampleList[position];
+        val clickedItem: ExampleItem = exampleList[position];
         clickedItem.text2 = "clicked"
         adapter.notifyItemChanged(position)
     }
@@ -76,8 +77,6 @@ class MainActivity : AppCompatActivity(),ExampleAdapter.OnItemClickListener{
     }
 
 
-
-
     private fun generateList(size: Int): ArrayList<ExampleItem> {
         val list = ArrayList<ExampleItem>()
         repeat(size) { i ->
@@ -90,8 +89,6 @@ class MainActivity : AppCompatActivity(),ExampleAdapter.OnItemClickListener{
         }
         return list
     }
-
-
 
 
 }
