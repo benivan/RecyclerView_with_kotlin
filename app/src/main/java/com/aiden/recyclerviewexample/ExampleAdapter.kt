@@ -39,7 +39,7 @@ class ExampleAdapter(
 
 
     inner class ExampleViewHolder(private val itemBinding: ExampleItemBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
+        RecyclerView.ViewHolder(itemBinding.root),View.OnClickListener {
 
         private var position:Int? = null
 
@@ -51,23 +51,27 @@ class ExampleAdapter(
 
         }
 
-//        init {
-//            itemBinding.root.setOnClickListener(this)
-//        }
-//
-//        override fun onClick(v: View?) {
-//            val position = this.position
-//            if (position != null) {
-//                listener.onItemClick(position)
-//            }
-//        }
+        init {
+            itemBinding.root.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = this.position
+            if (position != RecyclerView.NO_POSITION)  {
+                if (position != null) {
+                    listener.onItemClick(position)
+                }
+            }
+        }
 
 
     }
 
-//    interface OnItemClickListener {
-//        fun onItemClick(position: Int)
-//    }
+
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
 
 }
 

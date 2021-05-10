@@ -1,12 +1,13 @@
 package com.aiden.recyclerviewexample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aiden.recyclerviewexample.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),ExampleAdapter.OnItemClickListener{
 
 
     private val binding: ActivityMainBinding by lazy {
@@ -27,26 +28,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val adapter by lazy {
-        ExampleAdapter(exampleList)
+        ExampleAdapter(exampleList,this)
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        ExampleAdapter(exampleList)
+
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+
 
         binding.fabAdd.setOnClickListener {
             insertIem()
         }
-
         binding.fabDelete.setOnClickListener {
             removeItem()
         }
 
 
+    }
+
+
+    override fun onItemClick(position: Int) {
+        Toast.makeText(this, "Item $position clicked", Toast.LENGTH_SHORT).show()
+        val clickedItem:ExampleItem = exampleList[position];
+        clickedItem.text2 = "clicked"
+        adapter.notifyItemChanged(position)
     }
 
     fun insertIem() {
@@ -67,6 +76,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
+
     private fun generateList(size: Int): ArrayList<ExampleItem> {
         val list = ArrayList<ExampleItem>()
         repeat(size) { i ->
@@ -79,6 +90,8 @@ class MainActivity : AppCompatActivity() {
         }
         return list
     }
+
+
 
 
 }
